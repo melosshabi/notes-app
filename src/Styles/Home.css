@@ -1,0 +1,281 @@
+.home-wrapper{
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--black);
+    display: flex;
+    overflow-x: hidden;
+}
+.home-sidebar{
+    width: 15%;
+    height: 100%;
+    color:white;
+    border-right: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* User details */
+.user-info{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid white;
+}
+.user-icon{
+    width: 45px;
+}
+.create-note-btn{
+    font-size: 1.5em;
+    padding:10px 35px;
+    cursor: pointer;
+    background-color: var(--green2);
+    color:white;
+    border:none;
+    border-radius: 5px;
+    margin:50px 0;
+    display: flex;
+    align-items: center;
+    transition: all 250ms;
+}
+.create-note-btn:hover{
+    background-color: var(--darkGreen);
+}
+.plus-icon{
+    width: 30px;
+    margin-right: 5px;
+}
+/* Notes on the sidebar*/
+.notes{
+    border-top: 1px solid white;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y:scroll;
+    overflow-x:hidden;
+}
+.notes::-webkit-scrollbar{
+    width:8px;
+}
+.notes::-webkit-scrollbar-thumb{
+    background-color: var(--dimWhite2);
+    border-radius: 5px;
+}
+.note{
+    width: 90%;
+    min-height: 150px;
+    margin:10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--dimWhite);
+    position: relative;
+}
+.note-title{
+    font-size: 1.2em;
+}
+.last-update{
+    position: absolute;
+    bottom: 5px;
+    font-size: .85em;
+}
+/* Note Editor */
+.note-editor{
+    width: 85vw;
+    height: 100vh;
+    background-color: var(--black);
+    color:white;
+}
+.text-transform-options{
+    width: 80%;
+    margin: auto;
+    background-color: var(--dimWhite);
+    border-radius: 25px;
+    padding:10px 0;
+    margin-top:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.font-family{
+    border-left:1px solid gray;
+    border-right:1px solid gray;
+    padding:0 20px;
+    margin:0 20px;
+}
+.font-family-select, .font-size-select{
+    overflow: scroll;
+    border:none;
+    border-radius: 5px;
+    padding:3px 10px;
+    font-size: 1em;
+}
+.font-family-select:focus, .font-size-select:focus{
+    outline:1.5px solid var(--green2)
+}
+.font-style{
+    display: flex;
+    border-left: 1px solid gray;
+    margin-left: 20px;
+}
+.font-style-btns{
+    font-size: 1.2em;
+    background: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color:white;
+    margin:0 10px;
+    padding:0 5px;
+    transition: all 200ms;
+}
+.font-style-btns:hover{
+    background-color: rgba(255, 255, 255, .2);
+}
+.active-font-style{
+    background-color: var(--dimWhite3);
+}
+.expanded-note{
+    width: 95%;
+    height: 88vh;
+    margin:auto;
+    margin-top: 3%;
+    overflow-y: hidden;
+    position: relative;
+}
+.expanded-note-title, .note-content{
+    width: 98.5%;
+    margin:1% 0;
+    font-size: 1.8em;
+    background: none;
+    color:white;
+    padding:10px;
+    border:1px solid white;
+    border-radius: 5px;
+}
+.note-content{
+    height: 68vh;
+    font-size: 12px;
+    font-family: 'Comme', sans-serif;
+}
+.expanded-note-title:focus, .note-content:focus{
+    outline:none;
+}
+/* Close note button styles */
+.close-note-btn{
+    position: absolute;
+    right:1.5rem;
+    top:2.5em;
+    border:none;
+    border-radius: 50%;
+    background: none;
+    padding:10px;
+    cursor: pointer;
+    transition: all 500ms;
+}
+.close-note-btn::after{
+    width: 100px;
+    content:'Close Note';
+    opacity: 0;
+    position: absolute;
+    top:0px;
+    left:-28px;
+    background-color: var(--dimWhite);
+    font-size: 1.5em;
+    color:white;
+    border-radius: 10px;
+    padding:2px;
+    transition: all 500ms;
+}
+.close-note-btn:hover:after{
+    opacity: 1;
+    top:-35px;
+}
+.close-note-btn:hover{
+    background-color: var(--dimWhite);
+}
+.close-note-btn img{
+    width: 35px;
+    display: inline-block;
+    vertical-align: middle;
+}
+/* Save note button */
+.save-btn{
+    width: 15%;
+    font-size: 1.5em;
+    background-color: var(--green2);
+    color:white;
+    border:none;
+    padding:4px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    position: absolute;
+    bottom: -50px;
+    left:10px;
+    transition: all 250ms;
+}
+.save-btn:hover{
+    background-color: var(--darkGreen);
+}
+.active-save-btn{
+    bottom: 10px;
+}
+/* Classes for text edditing */
+.fontSize10{
+    font-size: 10px;
+}
+.fontSize12{
+    font-size: 12px;
+}
+.fontSize14{
+    font-size: 14px;
+}
+.fontSize16{
+    font-size: 16px;
+}
+.fontSize18{
+    font-size: 18px;
+}
+.fontSize20{
+    font-size: 20px;
+}
+.fontSize22{
+    font-size: 22px;
+}
+.fontSize24{
+    font-size: 24px;
+}
+.fontSize26{
+    font-size: 26px;
+}
+.fontSize28{
+    font-size: 28px;
+}
+.fontSize30{
+    font-size: 30px;
+}
+.fontSize32{
+    font-size: 32px;
+}
+.fontSize34{
+    font-size: 34px;
+}
+.fontSize36{
+    font-size: 36px;
+}
+.fontSize38{
+    font-size: 38px;
+}
+.fontSize40{
+    font-size: 40px;
+}
+.bold{
+    font-weight: bold;
+}
+.italic{
+    font-style: italic;
+}
+.underline{
+    text-decoration: underline;
+}

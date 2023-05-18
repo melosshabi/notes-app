@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Comme:wght@300;400;500;600;700&display=swap');
+body{
+    font-family: 'Comme', sans-serif;
+}
+:root{
+    --green:rgba(0, 155, 50);
+    --green2:rgb(9, 163, 58);
+    --darkGreen:rgb(7, 138, 48);
+    --black:rgb(26, 26, 26);
+    --lightBlack:rgb(38, 38, 38);
+    --dimWhite:rgba(255, 255, 255, .1);
+    --dimWhite2:rgba(255, 255, 255, .5);
+    --dimWhite3:rgba(255, 255, 255, .2);
+}
