@@ -61,7 +61,6 @@ interface NoteEditorProps {
 const NoteEditor:React.FC<NoteEditorProps> = ({notes, setNotes, noteId, noteIndex, setNoteId, noteTitle, setNoteTitle, noteContent, setNoteContent, selectedFont, setSelectedFont, fontSize, setFontSize, isBold, setIsBold, isItalic, setIsItalic, isUnderline, setIsUnderline, fontFamilies, setShowNote, fetchedFromDatabase, setFetchedFromDatabase }) =>  {
 
     useEffect(() => {
-      console.log(notes)
         const textarea = document.querySelector('.note-content')
 
         // These if statements check if the saved note had these font styles
@@ -107,16 +106,17 @@ const NoteEditor:React.FC<NoteEditorProps> = ({notes, setNotes, noteId, noteInde
           saveBtn?.classList.add('active-save-btn')
         }
       }
-  
+      
+      // This function changes the font 
       function handleFontChange(e:ChangeEvent<HTMLSelectElement>){
         const newFont:string = fontFamilies[e.target.value];
-
         const textarea:HTMLTextAreaElement | null = document.querySelector('.note-content')
 
         textarea !== null ? textarea.style.fontFamily = newFont : ''
-        setSelectedFont(fontFamilies[newFont])
+        setSelectedFont(newFont)
       }
-  
+      
+      // This function changes the size of the font
       function handleFontSizeChange(e:ChangeEvent){
         const {value} = e.target as HTMLSelectElement
         const parsedValue = parseInt(value)
@@ -129,7 +129,8 @@ const NoteEditor:React.FC<NoteEditorProps> = ({notes, setNotes, noteId, noteInde
         }
         setFontSize(parsedValue)
       }
-  
+      
+      // This funcion changes the font style (bold, italic, underline)
       function handleFontStyleChange(e:MouseEvent){
   
         const button = e.target as HTMLButtonElement
@@ -192,7 +193,20 @@ const NoteEditor:React.FC<NoteEditorProps> = ({notes, setNotes, noteId, noteInde
 
       // This function checks if the note already exists on the database, if so it will update that existing document. Otherwise it will create a new document
       async function saveNote(){
+        // This block of code moves the edited note to the top of the notes list
+        let tempArr: NotesInterface[] = []
+        if(notes !== undefined) tempArr = [notes[noteIndex]]
+        
+        if(notes !== undefined){
+          for(let i = 0; i < notes.length; i++){
+            if(notes[i] !== notes[noteIndex]){
+              tempArr.push(notes[i])
+            }
+          }
+        }
+        setNotes(tempArr)
 
+        // 
         if(fetchedFromDatabase && auth.currentUser !== null){
           saveBtn?.classList.remove('active-save-btn')
           const docRef = doc(db, 'notes', noteId)

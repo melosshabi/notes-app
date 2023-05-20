@@ -1,17 +1,27 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useEffect } from 'react'
 import {useNavigate} from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import {auth} from '../firebase-config'
 import background from '../images/background.jpg'
 import '../Styles/SignInUp.css'
 
-
 export default function SignIn() {
+
+  const navigate = useNavigate()
+
+    // This function checks if the user is logged in, if they are then it will navigate them to the note editor
+    useEffect(() =>{
+      auth.onAuthStateChanged(() => {
+        if(auth.currentUser !== null){
+          localStorage.setItem('email', JSON.stringify(auth.currentUser?.email))
+          navigate('/')
+        }
+      })
+    }, [])
 
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [error, setError] = useState<string>('')
-    const navigate = useNavigate()
 
     async function logIn(e: FormEvent<HTMLFormElement>){
         e.preventDefault()
