@@ -1,0 +1,35 @@
+/* The modal that lets the user decide if they are sure they want to delete the note or not */
+.modal{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 5;
+    background-color: rgba(0, 0, 0, .8);
+    color:white;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.active-modal{
+    display: flex;
+}
+.modal-btns-wrapper{
+    margin-top: 50px;
+}
+.modal-btns{
+    font-size: 1.5em;
+    margin:0 15px;
+    padding:5px 25px;
+    cursor: pointer;
+    border:none;
+    border-radius: 8px;
+    color:white;
+    text-shadow: 0 0 5px black;
+}
+.modal-btns:first-of-type{
+    background-color: rgb(189, 52, 52);
+}
+.modal-btns:last-of-type{
+    background-color: var(--green2);
+}

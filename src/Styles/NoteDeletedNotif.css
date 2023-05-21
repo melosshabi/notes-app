@@ -1,0 +1,45 @@
+.note-deleted-wrapper{
+    height: 90vh;
+    width: 15vw;
+    position: absolute;
+    bottom: 20px;
+    right:0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    transition: all 300ms;
+}
+/* The notification div that lets the user know the note has been deleted */
+.note-deleted{
+    margin:10px 0;
+    color:white;
+    background-color: rgba(0, 0, 0, .5);
+    padding:20px;
+    border-radius: 10px;
+    transform: translateX(100%);
+    transition: all 400ms;
+}
+.active-note-deleted{
+    transform: translateX(0);
+}
+.animation-div{
+    width: 100%;
+    height: 4px;
+    background-color: var(--green2);
+    margin-top: 20px;
+    animation-name: reduceWidth;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-duration: 2.5s;
+    animation-fill-mode: forwards;
+    animation-delay: 900ms;
+}
+@keyframes reduceWidth {
+    0%{
+        width: 100%;
+    }
+    100%{
+        width: 0;
+    }
+}

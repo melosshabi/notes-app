@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import { auth, db } from '../firebase-config'
-import { collection, getDocs, query, where, orderBy } from 'firebase/firestore'
+import { collection, getDocs, query, where, orderBy, doc, deleteDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 // Components
 import NoteEditor from './NoteEditor'
@@ -12,6 +12,9 @@ import userIcon from '../images/user.svg'
 import plusIcon from '../images/plus.svg'
 // CSS
 import "../Styles/Home.css"
+import "../Styles/NoteEditor.css"
+import "../Styles/NoteDeletedNotif.css"
+import "../Styles/Modal.css"
 
 export interface FontsObject {
   [key: string]: string
@@ -141,8 +144,78 @@ export default function Home() {
 
       return {day, month, year, hours, minutes}
   }
+
+  function showMoreOptions(index:number){
+    document.querySelectorAll('.delete-note-btn')[index].classList.toggle('active-delete-note-btn')
+  }
+
+  // This variable will contain the document ID of the note that's stored on the database
+  const [noteIdToDelete, setNoteIdToDelete] = useState<string>('')
+  // This variable will contain the note index in the notes array
+  const [noteIndexToDelete, setNoteIndexToDelete] = useState<number>(0)
+  const [noteTitleToDelete, setNoteTitleToDelete] = useState<string>('')
+  // This variable is used to trigger a rerender when a note is deleted but the NoteEditor is not rendered yet
+  const [reRender, setRerender] = useState<boolean>(false)
+  // This function sets the document id of the note that is going to be deleted and shows the modal
+
+  function preDelete(noteId:string, noteIndex:number, noteTitle:string){
+    document.querySelector('.modal')?.classList.add('active-modal')
+    setNoteIdToDelete(noteId)
+    setNoteIndexToDelete(noteIndex)
+    setNoteTitleToDelete(noteTitle)
+  }
+  // This function shows the modal before deleting the note
+  async function deleteNote(){
+    document.querySelector('.modal')?.classList.remove('active-modal')
+
+    const deletedNoteNotifsWrapper = document.querySelector('.note-deleted-wrapper') as HTMLDivElement
+
+    const noteDeleted = document.createElement('div')
+    const h3 = document.createElement('h3')
+    const animationDiv = document.createElement('div')
+    
+    noteDeleted.classList.add('note-deleted')
+    h3.innerText = "Note Deleted Successfully"
+    animationDiv.classList.add('animation-div')
+    
+    noteDeleted.append(h3)
+    noteDeleted.append(animationDiv)
+    deletedNoteNotifsWrapper.prepend(noteDeleted)
+    setTimeout(() => noteDeleted.classList.add('active-note-deleted'), 500)
+    setTimeout(() => noteDeleted.classList.remove('active-note-deleted'), 3500)
+    setTimeout(() => noteDeleted.remove(), 3900)
+
+    let tempArr = notes
+    tempArr?.splice(noteIndexToDelete, 1)
+    setNotes(tempArr)
+    // The reason I used both shownote and reRender variables is that when the 'notEditor' is unrendered after setting 'showNote' to false triggers a rerender
+    // but when the 'noteEditor' is not rendered changing 'showNote' won't trigger a rerender therefore I used 'reRender' to trigger a rerender
+    setShowNote(false)
+    setRerender(true)
+
+    // The code below will delete the note from the database
+    const noteRef = doc(db, 'notes', noteIdToDelete)
+    await deleteDoc(noteRef)
+  }
+
+  useEffect(() => setRerender(false), [reRender])
+
   return (
     <div className="home-wrapper">
+
+      {/* This div shows a modal to the user to make sure that they want to Delete the note */}
+      <div className="modal">
+        <h2>Are you sure you want to delete Note {noteTitleToDelete}</h2>
+        <div className='modal-btns-wrapper'>
+          <button className='modal-btns' onClick={() => {
+            document.querySelector('.modal')?.classList.remove('active-modal')}}>No</button>
+            <button className='modal-btns' onClick={() => {deleteNote()}}>Yes</button>
+        </div>
+      </div>
+
+      <div className="note-deleted-wrapper">
+        {/* This div will be used to let the user know that the note has been deleted */}
+      </div>
 
       {/* Sidebar */}
       <div className="home-sidebar">
@@ -167,16 +240,35 @@ export default function Home() {
              else date = note.lastUpdatedAt
             
               return (
-                <div className="note" key={index} onClick={() => handleShowNote(note.noteId, index, note.noteTitle, note.noteContent, note.fontSize, note.fontFamily, note.isBold, note.isItalic, note.isUnderline, note.fetchedFromDatabase)}>
-                  <p className="note-title">{note.noteTitle}</p>
-                  <span className="last-update">Last updated at:{`${date.day}/${date.month}/${date.year}/${date.hours}:${date.minutes}`}</span>
+                <div className="note" key={index}>
+                  {/* Note Title and 'more options' button wrapper */}
+                  <div style={{height:'20%', borderBottom:'1px solid white', display:'flex', alignItems:'center', position:'relative'}}>
+                    <p className="note-title">{note.noteTitle}</p>
+
+                    <div className="more-options" onClick={() => showMoreOptions(index)}>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+
+                    <div className="more-options-menu">
+                      <button className="delete-note-btn" onClick={() => {preDelete(note.noteId, index, note.noteTitle)}}>Delete</button>
+                    </div>
+                  </div>
+                  {/*  */}
+
+                  {/* This div is used to view the note */}
+                  <div className="view-note-div" onClick={() => handleShowNote(note.noteId, index, note.noteTitle, note.noteContent, note.fontSize, note.fontFamily, note.isBold, note.isItalic, note.isUnderline, note.fetchedFromDatabase)}>
+                    <span className="last-update">Last updated at:{`${date.day}/${date.month}/${date.year}/${date.hours}:${date.minutes}`}</span>
+                  </div>
+                  
                 </div>
               )
             })}
         </div>
 
       </div>
-
+          
        {/* Note Editor */}
        {/* noteId is the document ID stored on firestore */}
        {showNote && 
