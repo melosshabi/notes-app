@@ -85,6 +85,10 @@ export default function Home() {
     // noteId is the document id stored on firestore, index is the note's index in the notes array
     const handleShowNote = (noteId:string, index:number, noteTitle:string, noteContent:string, fontSize:number, fontFamily:string, isBold:boolean, isItalic:boolean, isUnderline:boolean, fetchedFromDatabase:boolean):void =>{
       
+      if(window.screen.width <= 834){
+        document.querySelector('.home-sidebar')?.classList.remove('active-sidebar')
+        document.querySelector('.notes')?.classList.remove('active-notes-list')
+      }
       setShowNote(false)
 
       setTimeout(() => {
@@ -166,6 +170,12 @@ export default function Home() {
   }
   // This function shows the modal before deleting the note
   async function deleteNote(){
+
+    if(window.screen.width <= 430){
+      document.querySelector('.home-sidebar')?.classList.remove('active-sidebar')
+      document.querySelector('.notes')?.classList.remove('active-notes-list')
+    }
+
     document.querySelector('.modal')?.classList.remove('active-modal')
 
     const deletedNoteNotifsWrapper = document.querySelector('.note-deleted-wrapper') as HTMLDivElement
@@ -200,12 +210,20 @@ export default function Home() {
 
   useEffect(() => setRerender(false), [reRender])
 
+  // This function shows or hides the sidebar on mobile devices
+  function toggleSidebar(){
+    const sidebar = document.querySelector('.home-sidebar') as HTMLDivElement
+    const notes = document.querySelector('.notes') as HTMLDivElement
+    sidebar.classList.toggle('active-sidebar')
+    notes.classList.toggle('active-notes-list')
+  }
+
   return (
     <div className="home-wrapper">
 
       {/* This div shows a modal to the user to make sure that they want to Delete the note */}
       <div className="modal">
-        <h2>Are you sure you want to delete Note {noteTitleToDelete}</h2>
+        <h2>Are you sure you want to delete {noteTitleToDelete}</h2>
         <div className='modal-btns-wrapper'>
           <button className='modal-btns' onClick={() => {
             document.querySelector('.modal')?.classList.remove('active-modal')}}>No</button>
@@ -226,6 +244,14 @@ export default function Home() {
             <img src={userIcon} className="user-icon"/>
           </div>
           <p>{removeQuotationMarks(localStorage.getItem('email')  || " ")}</p>
+
+          {/* Hamburger button to toggle the sidebar on mobile devices */}
+
+          <div className="hamburger-btn" onClick={() => toggleSidebar()}>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
 
         {/* Create a new note button */}
