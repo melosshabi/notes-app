@@ -1,5 +1,5 @@
 import { FormEvent, useState, useEffect } from 'react'
-import {useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import {auth} from '../firebase-config'
 import background from '../images/background.jpg'
@@ -66,6 +66,7 @@ export default function SignIn() {
           <label className='error'>{error}</label>
         <button className='sign-in-up-btn'>Sign In</button>
       </form>
+      <label style={{marginBottom:'10px'}}>Don't have an account? <Link to="/signUp">Sign up</Link></label>
     </div>
   </div>
   )
