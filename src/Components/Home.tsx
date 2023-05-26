@@ -134,17 +134,34 @@ export default function Home() {
           lastUpdatedAt:{year, month, day, hours, minutes},
           fontFamily: fontFamilies.come
         })
+        setNoteTitle(`Note ${notes !== undefined ? notes.length : 1}`)
+        setNoteContent('')
+        setFontSize(12)
+        setIsBold(false)
+        setIsItalic(false)
+        setIsUnderline(false)
+        setFetchedFromDatabse(false)
+        setNoteId('')
+        setSelectedFont(fontFamilies.come)
+        setShowNote(true)
         setNotes(tempArr)
-        
+
+        scrollToBottomNotes()
       }
     }
-  
+    function scrollToBottomNotes(){
+      const notesList = document.querySelector('.notes') as HTMLDivElement
+      setTimeout(() => notesList.scrollTop = notesList.scrollHeight, 10)
+      
+    }
     function resolveDate(date:Date){
       const year = date.getFullYear()
       let month = resolveMonth(date.getMonth());
       const day = date.getDate()
       const hours = date.getHours()
-      const minutes = date.getMinutes()
+      let minutes: number | string = date.getMinutes()
+
+      if(minutes.toString().length === 1) minutes = `0${minutes}`
 
       return {day, month, year, hours, minutes}
   }
@@ -177,7 +194,7 @@ export default function Home() {
     }
 
     document.querySelector('.modal')?.classList.remove('active-modal')
-
+    document.querySelectorAll('.delete-note-btn')[noteIndexToDelete].classList.remove('active-delete-note-btn')
     const deletedNoteNotifsWrapper = document.querySelector('.note-deleted-wrapper') as HTMLDivElement
 
     const noteDeleted = document.createElement('div')

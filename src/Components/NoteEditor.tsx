@@ -195,12 +195,15 @@ const NoteEditor:React.FC<NoteEditorProps> = ({notes, setNotes, noteId, noteInde
       async function saveNote(){
         // This block of code moves the edited note to the top of the notes list
         let tempArr: NotesInterface[] = []
-        if(notes !== undefined) tempArr = [notes[noteIndex]]
+        if(notes !== undefined){
+          tempArr = [notes[noteIndex]]
+          tempArr[0].noteTitle = noteTitle
+        } 
         
         if(notes !== undefined){
           for(let i = 0; i < notes.length; i++){
             if(notes[i] !== notes[noteIndex]){
-              tempArr.push(notes[i])
+              tempArr.push(notes[i])   
             }
           }
         }
@@ -238,8 +241,11 @@ const NoteEditor:React.FC<NoteEditorProps> = ({notes, setNotes, noteId, noteInde
             fontSize,
             createdAt:serverTimestamp(),
             lastUpdatedAt:serverTimestamp()
-          }).then(res => setNoteId(res.id))
-          setFetchedFromDatabase(true)
+          }).then(res => {
+            setNoteId(res.id)
+            setFetchedFromDatabase(true)
+          })
+          
         }
       }
 
